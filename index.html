@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">SUNNAH STUDIO</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700;800&family=Cinzel+Decorative:wght@700&family=Amiri:wght@400;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gl:#f0d980;--gd:#8b6914;
+  --deep:#060b06;--panel:#111d11;--p2:#192819;
+  --gr:#173217;--g2:#1e3a1e;
+  --text:#f0e8d8;--t2:#c8b070;--brd:rgba(201,168,76,0.2);
+  --red:#e05555;--blue:#5599ee;--green:#44bb88;
+  --primary-h:var(--gold);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--deep);color:var(--text);font-family:'Lato',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 12% 12%,rgba(20,50,20,.32) 0%,transparent 55%),
+  radial-gradient(ellipse at 88% 88%,rgba(201,168,76,.06) 0%,transparent 55%),
+  repeating-linear-gradient(55deg,transparent,transparent 38px,rgba(201,168,76,.01) 38px,rgba(201,168,76,.01) 39px),
+  repeating-linear-gradient(-55deg,transparent,transparent 38px,rgba(201,168,76,.01) 38px,rgba(201,168,76,.01) 39px);}
+
+/* ── SCREEN ── */
+.scr{display:none;position:relative;z-index:1;}
+.scr.on{display:block;}
+#s-login.on{display:flex;min-height:100vh;align-items:center;justify-content:center;}
+
+/* ── LOGIN ── */
+.lbox{background:var(--panel);border:1px solid var(--brd);border-radius:20px;padding:40px 32px;width:100%;max-width:400px;margin:20px;}
+.ll{text-align:center;margin-bottom:24px;}
+.ll-em{font-size:34px;color:var(--gold);opacity:.7;margin-bottom:6px;}
+.ll-ti{font-family:'Cinzel Decorative',serif;font-size:22px;color:var(--gold);letter-spacing:4px;text-shadow:0 0 20px rgba(201,168,76,.45);}
+.ll-su{font-size:9px;letter-spacing:4px;color:var(--t2);text-transform:uppercase;margin-top:3px;}
+.ll-ld{width:140px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:10px auto 0;}
+.ltabs{display:flex;background:var(--gr);border-radius:10px;overflow:hidden;margin-bottom:20px;}
+.lt{flex:1;padding:10px;background:transparent;border:none;color:var(--t2);cursor:pointer;font-family:'Noto Serif Bengali',serif;font-size:14px;transition:all .2s;}
+.lt.on{background:linear-gradient(135deg,var(--gd),#6b4f0e);color:var(--gl);}
+.lform{display:none;}
+.lform.on{display:block;}
+.fi{display:flex;flex-direction:column;gap:5px;margin-bottom:13px;}
+.fi label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);}
+.fi input{background:var(--gr);border:1px solid var(--brd);border-radius:8px;color:var(--text);padding:10px 13px;font-size:14px;font-family:'Noto Serif Bengali',serif;outline:none;transition:border-color .2s;width:100%;}
+.fi input:focus{border-color:var(--gold);}
+.bmain{width:100%;padding:12px;background:linear-gradient(135deg,var(--gd),#6b4f0e);border:1px solid var(--gold);border-radius:10px;color:var(--gl);font-family:'Noto Serif Bengali',serif;font-size:15px;cursor:pointer;transition:all .2s;margin-top:2px;}
+.bmain:hover{background:linear-gradient(135deg,var(--gold),var(--gd));color:#000;}
+.em-err{background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);border-radius:8px;padding:10px;color:#f08080;font-size:13px;font-family:'Noto Serif Bengali',serif;margin-bottom:11px;display:none;}
+.em-err.on{display:block;}
+.em-ok{background:rgba(68,187,136,.1);border:1px solid rgba(68,187,136,.25);border-radius:8px;padding:10px;color:#80e0a0;font-size:13px;font-family:'Noto Serif Bengali',serif;margin-bottom:11px;display:none;}
+.em-ok.on{display:block;}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(6,11,6,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--brd);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:54px;}
+.top-logo{font-family:'Cinzel Decorative',serif;font-size:15px;color:var(--gold);letter-spacing:3px;white-space:nowrap;}
+.top-r{display:flex;align-items:center;gap:8px;}
+.tbtn{background:transparent;border:1px solid var(--brd);border-radius:8px;color:var(--t2);padding:6px 11px;cursor:pointer;font-size:12px;transition:all .2s;position:relative;font-family:'Lato',sans-serif;white-space:nowrap;}
+.tbtn:hover{border-color:var(--gold);color:var(--gold);}
+.tbtn.pro{background:linear-gradient(135deg,#4a3800,#6b5500);border-color:var(--gold);color:var(--gl);}
+.tbtn.pro:hover{background:linear-gradient(135deg,var(--gd),#9a7418);}
+.nb{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;width:17px;height:17px;border-radius:50%;font-size:9px;display:none;align-items:center;justify-content:center;}
+.nb.on{display:flex;}
+.uchip{background:var(--g2);border:1px solid var(--brd);border-radius:20px;padding:5px 11px;font-size:11px;color:var(--t2);}
+.uchip b{color:var(--gold);}
+.pbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;margin-left:3px;}
+.pb-basic{background:rgba(85,153,238,.15);color:var(--blue);border:1px solid rgba(85,153,238,.28);}
+.pb-advanced{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.28);}
+
+/* ── SLIDER ── */
+.slider-wrap{background:var(--panel);border-bottom:1px solid var(--brd);overflow:hidden;position:relative;}
+.slides-inner{display:flex;transition:transform .5s ease;}
+.slide{min-width:100%;display:flex;align-items:center;gap:0;cursor:pointer;text-decoration:none;}
+.slide-img{width:100%;height:160px;object-fit:cover;display:block;}
+.slide-img-placeholder{width:100%;}
+.slide-text-layer{padding:16px 20px;display:flex;align-items:center;gap:14px;}
+.slide-ico{width:50px;height:50px;border-radius:10px;background:var(--g2);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.slide-ico img{width:50px;height:50px;border-radius:10px;object-fit:cover;}
+.slide-ti{font-family:'Noto Serif Bengali',serif;font-size:15px;color:var(--gold);margin-bottom:3px;}
+.slide-tx{font-size:12px;color:var(--t2);line-height:1.5;}
+.sdots{display:flex;justify-content:center;gap:5px;padding:7px 0;background:var(--panel);border-top:1px solid var(--brd);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--brd);cursor:pointer;transition:all .2s;}
+.dot.on{background:var(--gold);width:18px;border-radius:3px;}
+
+/* ── ADS ── */
+.ad-wrap{text-align:center;padding:6px 0;background:rgba(0,0,0,.3);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);}
+.ad-lbl{font-size:8px;letter-spacing:2px;color:var(--t2);opacity:.4;text-transform:uppercase;margin-bottom:2px;}
+
+/* ── MAIN ── */
+.mwrap{max-width:850px;margin:0 auto;padding:16px;}
+.tabs{display:flex;background:var(--panel);border:1px solid var(--brd);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+.tab{flex:1;padding:12px 8px;background:transparent;border:none;color:var(--t2);cursor:pointer;font-family:'Noto Serif Bengali',serif;font-size:14px;transition:all .25s;position:relative;}
+.tab.on{background:linear-gradient(135deg,var(--g2),var(--p2));color:var(--gold);}
+.tab.on::after{content:'';position:absolute;bottom:0;left:8%;right:8%;height:2px;background:var(--gold);border-radius:2px;}
+.sec{background:var(--panel);border:1px solid var(--brd);border-radius:14px;padding:20px;display:none;}
+.sec.on{display:block;}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;}
+.fg{display:flex;flex-direction:column;gap:5px;flex:1;min-width:120px;}
+.fg label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);}
+select,input[type=number]{background:var(--gr);border:1px solid var(--brd);border-radius:8px;color:var(--text);padding:10px 12px;font-size:13px;font-family:'Noto Serif Bengali',serif;outline:none;appearance:none;-webkit-appearance:none;transition:border-color .2s;}
+select:focus,input[type=number]:focus{border-color:var(--gold);}
+.btn{padding:10px 20px;border-radius:8px;border:1px solid var(--gold);background:linear-gradient(135deg,var(--gd),#6b4f0e);color:var(--gl);font-family:'Noto Serif Bengali',serif;font-size:13px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.btn:hover{background:linear-gradient(135deg,var(--gold),var(--gd));color:#000;transform:translateY(-1px);}
+.slbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:7px;}
+.sbrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+.sb{padding:6px 13px;border-radius:20px;border:1px solid var(--brd);background:transparent;color:var(--t2);cursor:pointer;font-size:12px;transition:all .2s;}
+.sb.on{background:var(--gd);border-color:var(--gold);color:var(--gl);}
+.ld2{text-align:center;padding:22px;color:var(--t2);display:none;font-family:'Noto Serif Bengali',serif;}
+.ld2.on{display:block;}
+.spin{width:28px;height:28px;border:3px solid var(--brd);border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 8px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.emsg{background:rgba(224,85,85,.1);border:1px solid rgba(224,85,85,.28);border-radius:8px;padding:11px;color:#f08080;font-family:'Noto Serif Bengali',serif;font-size:13px;display:none;margin-top:8px;}
+.emsg.on{display:block;}
+.pvwrap{margin-top:18px;display:none;}
+.pvwrap.on{display:block;}
+.pvlbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:10px;text-align:center;}
+canvas{display:block;max-width:100%;border-radius:12px;border:1px solid var(--brd);box-shadow:0 8px 40px rgba(0,0,0,.65);margin:0 auto;}
+.btn-dl{background:linear-gradient(135deg,#142014,#1e2e1e);color:var(--gold);border-color:var(--gd);width:100%;margin-top:11px;padding:13px;font-size:15px;}
+.btn-dl:hover{background:linear-gradient(135deg,var(--gd),#9a7418);color:#fff;}
+.ibox{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);border-radius:8px;padding:10px 13px;font-family:'Noto Serif Bengali',serif;font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6;}
+
+/* ── NOTIF PANEL ── */
+.npanel{position:fixed;top:58px;right:12px;width:300px;max-height:420px;background:var(--panel);border:1px solid var(--brd);border-radius:14px;z-index:200;display:none;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.75);}
+.npanel.on{display:flex;}
+.np-head{padding:12px 15px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;}
+.np-head h3{font-family:'Noto Serif Bengali',serif;color:var(--gold);font-size:14px;}
+.nclose{background:transparent;border:none;color:var(--t2);cursor:pointer;font-size:18px;line-height:1;}
+.nlist{overflow-y:auto;flex:1;padding:8px;}
+.ni{padding:11px;border-radius:8px;margin-bottom:6px;border:1px solid var(--brd);transition:background .2s;}
+.ni.unread{border-left:3px solid var(--gold);background:rgba(201,168,76,.05);}
+.ni .ni-t{font-family:'Noto Serif Bengali',serif;font-size:13px;color:var(--text);margin-bottom:2px;}
+.ni .ni-b{font-size:11px;color:var(--t2);line-height:1.4;}
+.ni .ni-tm{font-size:9px;color:var(--t2);opacity:.6;margin-top:3px;}
+.nempty{text-align:center;padding:24px;color:var(--t2);font-family:'Noto Serif Bengali',serif;font-size:13px;}
+
+/* ── PRO MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;display:none;align-items:center;justify-content:center;padding:16px;}
+.overlay.on{display:flex;}
+.modal{background:var(--panel);border:1px solid var(--brd);border-radius:18px;padding:28px 24px;width:100%;max-width:480px;position:relative;max-height:90vh;overflow-y:auto;}
+.modal h2{font-family:'Cinzel Decorative',serif;color:var(--gold);font-size:18px;text-align:center;margin-bottom:5px;}
+.msub{text-align:center;color:var(--t2);font-size:12px;margin-bottom:20px;}
+.mclose{position:absolute;top:12px;right:14px;background:transparent;border:none;color:var(--t2);font-size:20px;cursor:pointer;line-height:1;}
+.pcards{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.pcard{flex:1;min-width:150px;background:var(--g2);border:2px solid var(--brd);border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;}
+.pcard:hover,.pcard.sel{border-color:var(--gold);background:rgba(201,168,76,.1);}
+.pc-name{font-family:'Noto Serif Bengali',serif;font-size:16px;color:var(--gold);margin-bottom:4px;}
+.pc-price{font-size:22px;font-weight:900;color:var(--text);margin-bottom:8px;}
+.pc-price span{font-size:12px;color:var(--t2);}
+.pc-feat{font-size:11px;color:var(--t2);line-height:1.7;text-align:left;}
+.pc-feat div::before{content:'✓  ';}
+.pay-box{background:rgba(201,168,76,.07);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:14px;display:none;}
+.pay-box.on{display:block;}
+.pay-title{font-family:'Noto Serif Bengali',serif;font-size:14px;color:var(--gold);margin-bottom:10px;text-align:center;}
+.pay-methods{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.pay-method{background:var(--g2);border:1px solid var(--brd);border-radius:8px;padding:8px 14px;text-align:center;}
+.pay-method .pm-name{font-size:12px;color:var(--gold);font-weight:700;}
+.pay-method .pm-num{font-size:14px;color:var(--text);font-weight:900;letter-spacing:1px;margin-top:3px;}
+.pay-fi{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.pay-fi label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t2);}
+.pay-fi input{background:var(--gr);border:1px solid var(--brd);border-radius:8px;color:var(--text);padding:10px 12px;font-size:14px;outline:none;transition:border-color .2s;width:100%;}
+.pay-fi input:focus{border-color:var(--gold);}
+.mnote{font-size:11px;color:var(--t2);text-align:center;margin-top:10px;line-height:1.5;}
+.pay-ok{background:rgba(68,187,136,.1);border:1px solid rgba(68,187,136,.25);border-radius:8px;padding:10px;color:#80e0a0;font-size:13px;font-family:'Noto Serif Bengali',serif;margin-top:10px;display:none;text-align:center;}
+.pay-ok.on{display:block;}
+
+/* ── CHAT ── */
+.cbtn{position:fixed;bottom:75px;right:16px;z-index:150;background:linear-gradient(135deg,var(--gd),#9a7418);border:1px solid var(--gold);border-radius:50px;padding:9px 16px;color:var(--gl);cursor:pointer;font-size:12px;font-family:'Noto Serif Bengali',serif;box-shadow:0 4px 18px rgba(201,168,76,.3);display:none;align-items:center;gap:5px;}
+.cbtn.on{display:flex;}
+.cbadge{background:var(--red);color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;margin-left:3px;}
+.cwidget{position:fixed;bottom:125px;right:16px;z-index:150;width:300px;height:400px;background:var(--panel);border:1px solid var(--brd);border-radius:14px;display:none;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.75);}
+.cwidget.on{display:flex;}
+.ch-head{padding:11px 14px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;}
+.ch-head h3{font-family:'Noto Serif Bengali',serif;color:var(--gold);font-size:13px;}
+.ch-online{font-size:10px;color:var(--green);}
+.ch-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px;}
+.cm{max-width:82%;padding:8px 11px;border-radius:10px;font-size:12px;font-family:'Noto Serif Bengali',serif;line-height:1.4;}
+.cm.u{align-self:flex-end;background:var(--g2);color:var(--text);border-bottom-right-radius:3px;}
+.cm.a{align-self:flex-start;background:rgba(201,168,76,.1);border:1px solid var(--brd);color:var(--text);border-bottom-left-radius:3px;}
+.cm .ct{font-size:8px;color:var(--t2);margin-top:2px;text-align:right;}
+.ch-inp{padding:9px;border-top:1px solid var(--brd);display:flex;gap:7px;}
+.ch-inp input{flex:1;background:var(--gr);border:1px solid var(--brd);border-radius:8px;color:var(--text);padding:8px 11px;font-size:12px;font-family:'Noto Serif Bengali',serif;outline:none;}
+.ch-inp input:focus{border-color:var(--gold);}
+.csend{background:var(--gd);border:1px solid var(--gold);border-radius:8px;color:var(--gl);padding:8px 12px;cursor:pointer;font-size:14px;}
+
+footer{text-align:center;padding:16px;font-size:11px;color:var(--t2);border-top:1px solid var(--brd);margin-top:16px;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--deep);}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:3px;}
+@media(max-width:550px){.uchip{display:none;}.top-logo{font-size:12px;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="s-login" class="scr">
+  <div class="lbox">
+    <div class="ll">
+      <div class="ll-em" id="login-logo-em">☪</div>
+      <div class="ll-ti" id="login-app-name">SUNNAH STUDIO</div>
+      <div class="ll-su" id="login-app-sub">ইসলামিক কন্টেন্ট ক্রিয়েটর</div>
+      <div class="ll-ld"></div>
+    </div>
+    <div class="ltabs">
+      <button class="lt on" onclick="lTab('in')">লগইন</button>
+      <button class="lt" onclick="lTab('up')">রেজিস্টার</button>
+    </div>
+    <div id="lf-in" class="lform on">
+      <div id="le-in" class="em-err"></div>
+      <div id="lo-in" class="em-ok"></div>
+      <div class="fi"><label>ইমেইল</label><input id="lin-e" type="email" placeholder="email@example.com" onkeypress="if(event.key==='Enter')doLogin()"></div>
+      <div class="fi"><label>পাসওয়ার্ড</label><input id="lin-p" type="password" placeholder="পাসওয়ার্ড" onkeypress="if(event.key==='Enter')doLogin()"></div>
+      <button class="bmain" onclick="doLogin()">লগইন করুন →</button>
+    </div>
+    <div id="lf-up" class="lform">
+      <div id="le-up" class="em-err"></div>
+      <div id="lo-up" class="em-ok"></div>
+      <div class="fi"><label>ইমেইল</label><input id="lup-e" type="email" placeholder="email@example.com"></div>
+      <div class="fi"><label>নাম (বাংলা/ইংরেজি)</label><input id="lup-n" type="text" placeholder="আপনার নাম"></div>
+      <div class="fi"><label>পাসওয়ার্ড (৬+ অক্ষর)</label><input id="lup-p" type="password" placeholder="পাসওয়ার্ড"></div>
+      <button class="bmain" onclick="doRegister()">অ্যাকাউন্ট তৈরি →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="s-main" class="scr">
+  <div class="topbar">
+    <div class="top-logo" id="top-app-name">☪ SUNNAH STUDIO</div>
+    <div class="top-r">
+      <div class="uchip">👤 <b id="tb-name">-</b><span id="tb-plan"></span></div>
+      <button class="tbtn" onclick="toggleNotif()" id="nbtn">🔔<span id="nbadge" class="nb">0</span></button>
+      <button class="tbtn pro" onclick="openPro()">✨ PRO</button>
+      <button class="tbtn" onclick="doLogout()">বের হন</button>
+    </div>
+  </div>
+
+  <!-- SLIDER -->
+  <div id="slider-section" class="slider-wrap" style="display:none;">
+    <div id="slides-inner" class="slides-inner"></div>
+    <div id="sdots" class="sdots"></div>
+  </div>
+
+  <!-- ADS -->
+  <div id="ad-banner-wrap" class="ad-wrap" style="display:none;">
+    <div class="ad-lbl">বিজ্ঞাপন</div>
+    <div id="ad-banner-code"></div>
+  </div>
+
+  <div class="mwrap">
+    <div class="tabs">
+      <button class="tab on" onclick="switchTab('q')">📖 কোরআনের আয়াত</button>
+      <button class="tab" onclick="switchTab('h')">📜 হাদিস</button>
+    </div>
+
+    <!-- QURAN -->
+    <div id="sec-q" class="sec on">
+      <div class="ibox" id="q-info">💡 সূরা ও আয়াত নির্বাচন করুন — বাংলা অনুবাদ ও রেফারেন্সসহ ইসলামিক কার্ড তৈরি হবে।</div>
+      <div class="row">
+        <div class="fg" style="flex:2;min-width:175px;"><label>সূরা</label>
+          <select id="sur-sel" onchange="updateAyahMax()"><option>লোড হচ্ছে...</option></select></div>
+        <div class="fg" style="max-width:100px;"><label>আয়াত</label>
+          <input type="number" id="ayah-n" value="1" min="1" max="7"></div>
+        <button class="btn" onclick="fetchQuran()">আয়াত আনুন</button>
+      </div>
+      <div class="slbl">থিম</div>
+      <div class="sbrow" id="qsb"></div>
+      <div class="ld2" id="ql"><div class="spin"></div>লোড হচ্ছে...</div>
+      <div class="emsg" id="qe"></div>
+      <div class="pvwrap" id="qpv">
+        <div class="pvlbl">কার্ড প্রিভিউ — 1080×1080px</div>
+        <canvas id="qc"></canvas>
+        <button class="btn btn-dl" onclick="dlCard('qc','quran-ayat')">⬇ PNG ডাউনলোড করুন</button>
+      </div>
+    </div>
+
+    <!-- HADITH -->
+    <div id="sec-h" class="sec">
+      <div class="ibox">💡 বাংলা হাদিস — উৎস: fawazahmed0/hadith-api (GitHub Open Source)</div>
+      <div class="row">
+        <div class="fg"><label>হাদিস গ্রন্থ</label>
+          <select id="hbook">
+            <option value="bukhari">সহীহ বুখারী</option>
+            <option value="muslim">সহীহ মুসলিম</option>
+            <option value="abudawud">আবু দাউদ</option>
+            <option value="ibnmajah">ইবনে মাজাহ</option>
+            <option value="tirmidhi">তিরমিযী</option>
+            <option value="nasai">নাসাঈ</option>
+          </select></div>
+        <div class="fg" style="max-width:110px;"><label>হাদিস নম্বর</label>
+          <input type="number" id="hnum" value="1" min="1" max="7563"></div>
+        <button class="btn" onclick="fetchHadith()">হাদিস আনুন</button>
+      </div>
+      <div class="slbl">থিম</div>
+      <div class="sbrow" id="hsb"></div>
+      <div class="ld2" id="hl"><div class="spin"></div>লোড হচ্ছে...</div>
+      <div class="emsg" id="he"></div>
+      <div class="pvwrap" id="hpv">
+        <div class="pvlbl">কার্ড প্রিভিউ — 1080×1080px</div>
+        <canvas id="hc"></canvas>
+        <button class="btn btn-dl" onclick="dlCard('hc','hadith-card')">⬇ PNG ডাউনলোড করুন</button>
+      </div>
+    </div>
+  </div>
+  <footer id="footer-text">Powered by SUNNAH STUDIO &nbsp;|&nbsp; <span style="color:var(--gold)">☪</span></footer>
+</div>
+
+<!-- NOTIF PANEL -->
+<div id="npanel" class="npanel">
+  <div class="np-head"><h3>🔔 নোটিফিকেশন</h3><button class="nclose" onclick="closeNotif()">×</button></div>
+  <div id="nlist" class="nlist"><div class="nempty">কোনো নোটিফিকেশন নেই</div></div>
+</div>
+
+<!-- PRO MODAL -->
+<div id="pro-overlay" class="overlay">
+  <div class="modal">
+    <button class="mclose" onclick="closePro()">×</button>
+    <h2>✨ PRO প্ল্যান</h2>
+    <p class="msub">বিজ্ঞাপনমুক্ত অভিজ্ঞতা নিন</p>
+    <div class="pcards" id="pro-plan-cards"></div>
+    <div id="pay-box" class="pay-box">
+      <div class="pay-title">💳 পেমেন্ট করুন</div>
+      <div class="pay-methods" id="pay-methods-list"></div>
+      <div class="pay-fi"><label>আপনার নির্বাচিত প্ল্যান</label>
+        <input id="pay-plan-show" type="text" readonly style="color:var(--gold);"></div>
+      <div class="pay-fi"><label>ট্রানজেকশন আইডি</label>
+        <input id="pay-txid" type="text" placeholder="পেমেন্টের পর ট্রানজেকশন আইডি দিন"></div>
+      <div class="pay-fi"><label>আপনার ইমেইল</label>
+        <input id="pay-email-show" type="text" readonly style="color:var(--t2);"></div>
+      <button class="bmain" onclick="submitPayment()" style="margin-top:4px;">📨 পেমেন্ট রিকোয়েস্ট পাঠান</button>
+      <div id="pay-ok" class="pay-ok">✅ রিকোয়েস্ট পাঠানো হয়েছে! এডমিন যাচাই করে আপনার অ্যাকাউন্ট আপগ্রেড করবেন।</div>
+    </div>
+    <p class="mnote" id="pro-note">পেমেন্টের পর এডমিন আপনার অ্যাকাউন্ট আপগ্রেড করবেন।</p>
+  </div>
+</div>
+
+<!-- CHAT (Advanced only) -->
+<button id="cbtn" class="cbtn" onclick="toggleChat()">
+  💬 লাইভ সাপোর্ট <span id="chat-ubadge" class="cbadge" style="display:none">0</span>
+</button>
+<div id="cwidget" class="cwidget">
+  <div class="ch-head">
+    <div><h3>💬 লাইভ সাপোর্ট</h3><div class="ch-online">● অনলাইন</div></div>
+    <button style="background:transparent;border:none;color:var(--t2);font-size:17px;cursor:pointer;" onclick="toggleChat()">×</button>
+  </div>
+  <div id="ch-msgs" class="ch-msgs">
+    <div class="cm a" id="chat-welcome-msg">আস্সালামুআলাইকুম! কিভাবে সাহায্য করতে পারি?<div class="ct">Support</div></div>
+  </div>
+  <div class="ch-inp">
+    <input id="ch-inp" type="text" placeholder="বার্তা লিখুন..." onkeypress="if(event.key==='Enter')sendChat()">
+    <button class="csend" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- POP-UNDER / SOCIAL BAR containers -->
+<div id="pop-under-container"></div>
+<div id="social-bar-container"></div>
+
+<script>
+// ═══════════════════════════════════
+// DB HELPER
+// ═══════════════════════════════════
+const DB={
+  get:(k,d)=>{try{const v=JSON.parse(localStorage.getItem('ss_'+k));return v!==null?v:d;}catch{return d;}},
+  set:(k,v)=>localStorage.setItem('ss_'+k,JSON.stringify(v))
+};
+// App settings with defaults
+function getSettings(){
+  return DB.get('app_settings',{
+    appName:'SUNNAH STUDIO',
+    appSub:'ইসলামিক কন্টেন্ট ক্রিয়েটর',
+    footerText:'Powered by SUNNAH STUDIO',
+    welcomeMsg:'আস্সালামুআলাইকুম! কিভাবে সাহায্য করতে পারি?',
+    contactNumber:'01310279755',
+    contactMethods:['নগদ','বিকাশ','উপায়'],
+    basicPrice:30, advancedPrice:50,
+    basicFeatures:['সোশ্যাল বার বন্ধ','পপ-আন্ডার বন্ধ','ব্যানার থাকবে'],
+    advancedFeatures:['সব বিজ্ঞাপন বন্ধ','কার্ডে ওয়াটারমার্ক নেই','লাইভ সাপোর্ট চ্যাট'],
+    bannerAdCode:'',
+    popunderCode:'',
+    socialBarCode:'',
+    themes:[
+      {id:'forest',label:'🌿 Forest',bg1:'#060d06',bg2:'#0d1c0d',bg3:'#172817',acc:'#1f3d1f',gold:'#c9a84c',text:'#f0ead8',sub:'#b8a060',brd:'rgba(201,168,76,.35)'},
+      {id:'night',label:'🌙 Night',bg1:'#05050f',bg2:'#0c0c22',bg3:'#14143a',acc:'#1e1e52',gold:'#8ab8f8',text:'#e8eeff',sub:'#88aade',brd:'rgba(138,184,248,.32)'},
+      {id:'gold',label:'✨ Gold',bg1:'#160f00',bg2:'#261c00',bg3:'#3d2c00',acc:'#4c3a00',gold:'#ffd700',text:'#fff8e5',sub:'#e0c060',brd:'rgba(255,215,0,.32)'},
+      {id:'earth',label:'🍂 Earth',bg1:'#140c08',bg2:'#241810',bg3:'#382618',acc:'#4c3220',gold:'#d4956a',text:'#f5ede4',sub:'#c09060',brd:'rgba(212,149,106,.32)'},
+      {id:'ocean',label:'🌊 Ocean',bg1:'#050e14',bg2:'#0a1e28',bg3:'#103040',acc:'#165060',gold:'#5cc8d8',text:'#e0f4f8',sub:'#80c0cc',brd:'rgba(92,200,216,.3)'}
+    ]
+  });
+}
+
+let CU=null, slideIdx=0, slideTimer=null, ST={q:'forest',h:'forest'}, selPlan=null;
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  if(!localStorage.getItem('ss_admin_pass')) localStorage.setItem('ss_admin_pass','admin123');
+  applyAppSettings();
+  const saved=DB.get('cur_user',null);
+  if(saved&&saved.email){CU=saved;refreshUserPlan();enterApp();}
+  else showScreen('s-login');
+});
+
+function applyAppSettings(){
+  const S=getSettings();
+  document.getElementById('page-title').textContent=S.appName;
+  document.getElementById('login-app-name').textContent=S.appName;
+  document.getElementById('login-app-sub').textContent=S.appSub;
+  document.getElementById('footer-text').innerHTML=S.footerText+' &nbsp;|&nbsp; <span style="color:var(--gold)">☪</span>';
+  document.getElementById('chat-welcome-msg').innerHTML=S.welcomeMsg+'<div class="ct">Support</div>';
+}
+
+function refreshUserPlan(){
+  if(!CU)return;
+  const proList=DB.get('pro_users',[]);
+  const pe=proList.find(x=>x.email===CU.email);
+  CU.plan=pe?pe.plan:'free';
+  DB.set('cur_user',CU);
+}
+
+// ═══════════════════════════════════
+// AUTH
+// ═══════════════════════════════════
+function lTab(t){
+  document.getElementById('lf-in').classList.toggle('on',t==='in');
+  document.getElementById('lf-up').classList.toggle('on',t==='up');
+  document.querySelectorAll('.lt')[0].classList.toggle('on',t==='in');
+  document.querySelectorAll('.lt')[1].classList.toggle('on',t==='up');
+}
+
+function doLogin(){
+  const e=document.getElementById('lin-e').value.trim().toLowerCase();
+  const p=document.getElementById('lin-p').value;
+  const le=document.getElementById('le-in');
+  le.classList.remove('on');
+  if(!e||!p){le.textContent='ইমেইল ও পাসওয়ার্ড দিন';le.classList.add('on');return;}
+  const users=DB.get('users',[]);
+  const found=users.find(u=>u.email===e&&u.password===p);
+  if(!found){le.textContent='ইমেইল বা পাসওয়ার্ড ভুল';le.classList.add('on');return;}
+  const proList=DB.get('pro_users',[]);
+  const pe=proList.find(x=>x.email===e);
+  CU={email:e,name:found.name,plan:pe?pe.plan:'free'};
+  DB.set('cur_user',CU);
+  enterApp();
+}
+
+function doRegister(){
+  const e=document.getElementById('lup-e').value.trim().toLowerCase();
+  const n=document.getElementById('lup-n').value.trim();
+  const p=document.getElementById('lup-p').value;
+  const le=document.getElementById('le-up');
+  const lo=document.getElementById('lo-up');
+  le.classList.remove('on');lo.classList.remove('on');
+  if(!e||!n||!p){le.textContent='সব তথ্য পূরণ করুন';le.classList.add('on');return;}
+  if(!/\S+@\S+\.\S+/.test(e)){le.textContent='সঠিক ইমেইল দিন';le.classList.add('on');return;}
+  if(p.length<6){le.textContent='পাসওয়ার্ড কমপক্ষে ৬ অক্ষর';le.classList.add('on');return;}
+  const users=DB.get('users',[]);
+  if(users.find(u=>u.email===e)){le.textContent='এই ইমেইলে ইতিমধ্যে অ্যাকাউন্ট আছে';le.classList.add('on');return;}
+  users.push({email:e,name:n,password:p,joinDate:new Date().toLocaleDateString('bn-BD')});
+  DB.set('users',users);
+  lo.textContent='অ্যাকাউন্ট তৈরি হয়েছে! লগইন করুন।';lo.classList.add('on');
+  setTimeout(()=>lTab('in'),1200);
+}
+
+function doLogout(){
+  CU=null;DB.set('cur_user',null);
+  clearInterval(slideTimer);
+  showScreen('s-login');
+}
+
+function showScreen(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+// ═══════════════════════════════════
+// ENTER APP
+// ═══════════════════════════════════
+function enterApp(){
+  refreshUserPlan();
+  applyAppSettings();
+
+  // Topbar
+  const S=getSettings();
+  document.getElementById('top-app-name').textContent='☪ '+S.appName;
+  document.getElementById('tb-name').textContent=CU.name||CU.email.split('@')[0];
+  const pb=document.getElementById('tb-plan');
+  if(CU.plan==='basic') pb.innerHTML='<span class="pbadge pb-basic">Basic</span>';
+  else if(CU.plan==='advanced') pb.innerHTML='<span class="pbadge pb-advanced">Advanced</span>';
+  else pb.innerHTML='';
+
+  setupAds(S);
+  loadSlider();
+  renderThemeBtns();
+  loadNotifs();
+  startPolling();
+  showScreen('s-main');
+  loadSurahs();
+
+  // Chat button for advanced
+  document.getElementById('cbtn').classList.toggle('on',CU.plan==='advanced');
+}
+
+// ═══════════════════════════════════
+// ADS
+// ═══════════════════════════════════
+function setupAds(S){
+  const bannerWrap=document.getElementById('ad-banner-wrap');
+  const bannerCode=document.getElementById('ad-banner-code');
+  const popCont=document.getElementById('pop-under-container');
+  const socialCont=document.getElementById('social-bar-container');
+
+  // Clear old ad containers
+  popCont.innerHTML='';socialCont.innerHTML='';bannerCode.innerHTML='';
+
+  if(CU.plan==='advanced'){
+    bannerWrap.style.display='none';
+    return;
+  }
+
+  // Banner ad (free + basic)
+  if(S.bannerAdCode){
+    bannerWrap.style.display='block';
+    injectAdCode(bannerCode, S.bannerAdCode);
+  } else {
+    // Default banner
+    bannerWrap.style.display='block';
+    injectAdCode(bannerCode, `<script>atOptions={'key':'089ce5c412da297789c84314bddae982','format':'iframe','height':60,'width':468,'params':{}};<\/script><script src="https://www.highperformanceformat.com/089ce5c412da297789c84314bddae982/invoke.js"><\/script>`);
+  }
+
+  if(CU.plan==='free'){
+    // Pop-under
+    const popCode=S.popunderCode||`<script src="https://pl27230352.effectivegatecpm.com/b7/06/a6/b706a6ac34c6bc47c66b87f0f8602554.js"><\/script>`;
+    injectAdCode(popCont, popCode);
+    // Social bar
+    const sbCode=S.socialBarCode||`<script src="https://pl28796867.effectivegatecpm.com/42/86/4d/42864d0e7d7108cf86bad3696b3c16ca.js"><\/script>`;
+    injectAdCode(socialCont, sbCode);
+  }
+}
+
+function injectAdCode(container, htmlStr){
+  const range=document.createRange();
+  range.selectNode(container);
+  const frag=range.createContextualFragment(htmlStr);
+  container.appendChild(frag);
+}
+
+// ═══════════════════════════════════
+// SLIDER
+// ═══════════════════════════════════
+function loadSlider(){
+  const slides=DB.get('slides',[]);
+  const sec=document.getElementById('slider-section');
+  if(!slides.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  const inner=document.getElementById('slides-inner');
+  const dots=document.getElementById('sdots');
+  inner.innerHTML='';dots.innerHTML='';
+  slides.forEach((s,i)=>{
+    const link=s.link?`href="${s.link}" target="_blank"`:'';
+    let slideHTML='';
+    if(s.imageUrl){
+      // Full-width image slider
+      slideHTML=`<a class="slide" style="display:block;min-width:100%;text-decoration:none;" ${link}>
+        <img src="${s.imageUrl}" class="slide-img" alt="${s.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div style="display:none;align-items:center;gap:14px;padding:16px 20px;">
+          <div class="slide-ico">${s.icon||'☪'}</div>
+          <div><div class="slide-ti">${s.title}</div><div class="slide-tx">${s.text}</div></div>
+        </div>
+      </a>`;
+    } else {
+      slideHTML=`<a class="slide" style="display:flex;min-width:100%;text-decoration:none;" ${link}>
+        <div class="slide-text-layer" style="width:100%;">
+          <div class="slide-ico">${s.icon||'☪'}</div>
+          <div><div class="slide-ti">${s.title}</div><div class="slide-tx">${s.text}</div></div>
+        </div>
+      </a>`;
+    }
+    inner.innerHTML+=slideHTML;
+    dots.innerHTML+=`<div class="dot${i===0?' on':''}" onclick="goSlide(${i})"></div>`;
+  });
+  slideIdx=0;clearInterval(slideTimer);
+  if(slides.length>1) slideTimer=setInterval(()=>goSlide((slideIdx+1)%slides.length),4500);
+}
+
+function goSlide(i){
+  const slides=DB.get('slides',[]);
+  if(!slides.length)return;
+  slideIdx=i;
+  document.getElementById('slides-inner').style.transform=`translateX(-${i*100}%)`;
+  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===i));
+}
+
+// ═══════════════════════════════════
+// THEMES
+// ═══════════════════════════════════
+function renderThemeBtns(){
+  const S=getSettings();
+  const themes=S.themes||[];
+  const qsb=document.getElementById('qsb');
+  const hsb=document.getElementById('hsb');
+  qsb.innerHTML='';hsb.innerHTML='';
+  themes.forEach((t,i)=>{
+    const qon=i===0&&!ST.q_set?' on':'';
+    const hon=i===0&&!ST.h_set?' on':'';
+    qsb.innerHTML+=`<button class="sb${ST.q===t.id?' on':qon}" data-t="${t.id}" onclick="pickStyle('q',this)">${t.label}</button>`;
+    hsb.innerHTML+=`<button class="sb${ST.h===t.id?' on':hon}" data-t="${t.id}" onclick="pickStyle('h',this)">${t.label}</button>`;
+  });
+  if(!ST.q_set&&themes[0]) ST.q=themes[0].id;
+  if(!ST.h_set&&themes[0]) ST.h=themes[0].id;
+}
+
+function pickStyle(type,btn){
+  const id=type+'sb';
+  document.querySelectorAll('#'+id+' .sb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ST[type]=btn.dataset.t;
+  ST[type+'_set']=true;
+  const pv=type==='q'?'qpv':'hpv';
+  if(document.getElementById(pv).classList.contains('on')){
+    type==='q'?fetchQuran():fetchHadith();
+  }
+}
+
+// ═══════════════════════════════════
+// NOTIFICATIONS
+// ═══════════════════════════════════
+function loadNotifs(){
+  const all=DB.get('notifications',[]);
+  const read=DB.get('read_notifs_'+CU.email,[]);
+  const relevant=all.filter(n=>n.target==='all'||(n.target==='pro'&&CU.plan!=='free')||(n.target==='free'&&CU.plan==='free'));
+  const unread=relevant.filter(n=>!read.includes(n.id));
+  const badge=document.getElementById('nbadge');
+  if(unread.length){badge.textContent=unread.length>9?'9+':unread.length;badge.classList.add('on');}
+  else badge.classList.remove('on');
+  const list=document.getElementById('nlist');
+  if(!relevant.length){list.innerHTML='<div class="nempty">কোনো নোটিফিকেশন নেই</div>';return;}
+  list.innerHTML=[...relevant].reverse().map(n=>`
+    <div class="ni${!read.includes(n.id)?' unread':''}" onclick="markRead('${n.id}')">
+      <div class="ni-t">${n.title}</div>
+      <div class="ni-b">${n.body}</div>
+      <div class="ni-tm">${n.time}</div>
+    </div>`).join('');
+}
+function markRead(id){
+  const r=DB.get('read_notifs_'+CU.email,[]);
+  if(!r.includes(id)){r.push(id);DB.set('read_notifs_'+CU.email,r);}
+  loadNotifs();
+}
+function toggleNotif(){
+  document.getElementById('npanel').classList.toggle('on');
+  loadNotifs();
+}
+function closeNotif(){document.getElementById('npanel').classList.remove('on');}
+
+// ═══════════════════════════════════
+// PRO MODAL
+// ═══════════════════════════════════
+function openPro(){
+  const S=getSettings();
+  // Render plan cards
+  const cards=document.getElementById('pro-plan-cards');
+  cards.innerHTML=`
+    <div class="pcard" id="pc-basic" onclick="selectProPlan('basic')">
+      <div class="pc-name">🌿 বেসিক</div>
+      <div class="pc-price">৳${S.basicPrice}<span>/মাস</span></div>
+      <div class="pc-feat">${(S.basicFeatures||[]).map(f=>`<div>${f}</div>`).join('')}</div>
+    </div>
+    <div class="pcard" id="pc-advanced" onclick="selectProPlan('advanced')">
+      <div class="pc-name">✨ অ্যাডভান্স</div>
+      <div class="pc-price">৳${S.advancedPrice}<span>/মাস</span></div>
+      <div class="pc-feat">${(S.advancedFeatures||[]).map(f=>`<div>${f}</div>`).join('')}</div>
+    </div>`;
+  document.getElementById('pay-box').classList.remove('on');
+  document.getElementById('pay-ok').classList.remove('on');
+  document.getElementById('pro-overlay').classList.add('on');
+}
+
+function selectProPlan(p){
+  selPlan=p;
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('pc-'+p).classList.add('sel');
+  const S=getSettings();
+  const payBox=document.getElementById('pay-box');
+  payBox.classList.add('on');
+  // Payment methods
+  const num=S.contactNumber||'01310279755';
+  const methods=S.contactMethods||['নগদ','বিকাশ','উপায়'];
+  document.getElementById('pay-methods-list').innerHTML=methods.map(m=>`
+    <div class="pay-method">
+      <div class="pm-name">${m}</div>
+      <div class="pm-num">${num}</div>
+    </div>`).join('');
+  document.getElementById('pay-plan-show').value=p==='basic'?`বেসিক — ৳${S.basicPrice}/মাস`:`অ্যাডভান্স — ৳${S.advancedPrice}/মাস`;
+  document.getElementById('pay-email-show').value=CU.email;
+  document.getElementById('pay-txid').value='';
+  document.getElementById('pay-ok').classList.remove('on');
+}
+
+function closePro(){document.getElementById('pro-overlay').classList.remove('on');}
+
+function submitPayment(){
+  const txid=document.getElementById('pay-txid').value.trim();
+  if(!txid){alert('ট্রানজেকশন আইডি দিন');return;}
+  if(!selPlan){alert('প্ল্যান নির্বাচন করুন');return;}
+  const reqs=DB.get('purchase_requests',[]);
+  reqs.push({id:'req'+Date.now(),email:CU.email,name:CU.name,plan:selPlan,txid,time:new Date().toLocaleString('bn-BD'),status:'pending'});
+  DB.set('purchase_requests',reqs);
+  document.getElementById('pay-ok').classList.add('on');
+}
+
+// ═══════════════════════════════════
+// CHAT
+// ═══════════════════════════════════
+function toggleChat(){document.getElementById('cwidget').classList.toggle('on');renderChat();}
+
+function sendChat(){
+  const inp=document.getElementById('ch-inp');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  const msgs=DB.get('chat_msgs',[]);
+  msgs.push({id:Date.now(),from:CU.email,fromName:CU.name,to:'admin',text:txt,
+    time:new Date().toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'}),isAdmin:false,readByAdmin:false});
+  DB.set('chat_msgs',msgs);
+  inp.value='';renderChat();
+}
+
+function renderChat(){
+  const msgs=DB.get('chat_msgs',[]);
+  const S=getSettings();
+  const mine=msgs.filter(m=>m.from===CU.email||m.to===CU.email);
+  const div=document.getElementById('ch-msgs');
+  div.innerHTML=`<div class="cm a">${S.welcomeMsg}<div class="ct">Support</div></div>`;
+  mine.forEach(m=>{
+    div.innerHTML+=`<div class="cm ${m.isAdmin?'a':'u'}">${m.text}<div class="ct">${m.time}</div></div>`;
+  });
+  div.scrollTop=div.scrollHeight;
+  const unread=msgs.filter(m=>m.to===CU.email&&m.isAdmin&&!m.readByUser);
+  const b=document.getElementById('chat-ubadge');
+  if(unread.length){b.textContent=unread.length;b.style.display='flex';}
+  else b.style.display='none';
+}
+
+// ═══════════════════════════════════
+// TAB / QURAN / HADITH
+// ═══════════════════════════════════
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',(i===0&&t==='q')||(i===1&&t==='h')));
+  document.getElementById('sec-q').classList.toggle('on',t==='q');
+  document.getElementById('sec-h').classList.toggle('on',t==='h');
+}
+
+async function loadSurahs(){
+  try{
+    const d=await(await fetch('https://api.alquran.cloud/v1/surah')).json();
+    const sel=document.getElementById('sur-sel');sel.innerHTML='';
+    d.data.forEach(s=>{
+      const o=document.createElement('option');o.value=s.number;o.dataset.n=s.numberOfAyahs;
+      o.textContent=`${s.number}. ${s.englishName} — ${s.name} (${s.numberOfAyahs})`;sel.appendChild(o);
+    });
+  }catch{document.getElementById('sur-sel').innerHTML='<option value="1">Al-Fatiha</option>';}
+}
+function updateAyahMax(){
+  const s=document.getElementById('sur-sel');const o=s.options[s.selectedIndex];
+  if(o&&o.dataset.n)document.getElementById('ayah-n').max=o.dataset.n;
+}
+
+async function fetchQuran(){
+  const s=document.getElementById('sur-sel').value||1;
+  const a=document.getElementById('ayah-n').value||1;
+  tog('ql',1);hid('qe');hid('qpv');
+  try{
+    const d=await(await fetch(`https://api.alquran.cloud/v1/ayah/${s}:${a}/bn.bengali`)).json();
+    if(d.code!==200)throw 0;
+    const {text,surah,numberInSurah}=d.data;
+    drawCard('qc',{type:'quran',text,style:ST.q,
+      ref:`সূরা ${surah.englishName} (${surah.name}), আয়াত: ${numberInSurah}`,
+      refSub:`Al-Quran ${surah.number}:${numberInSurah}`});
+    sho('qpv');
+  }catch{errEl('qe','আয়াত পাওয়া যায়নি।');}
+  tog('ql',0);
+}
+
+const bookBn={bukhari:'সহীহ বুখারী',muslim:'সহীহ মুসলিম',abudawud:'আবু দাউদ',ibnmajah:'ইবনে মাজাহ',tirmidhi:'তিরমিযী',nasai:'নাসাঈ'};
+async function fetchHadith(){
+  const book=document.getElementById('hbook').value;
+  const num=document.getElementById('hnum').value||1;
+  tog('hl',1);hid('he');hid('hpv');
+  try{
+    const d=await(await fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ben-${book}/${num}.json`)).json();
+    const text=(d.hadiths&&d.hadiths[0]&&d.hadiths[0].text)||d.text||'';
+    if(!text)throw 0;
+    drawCard('hc',{type:'hadith',text,style:ST.h,
+      ref:`${bookBn[book]}, হাদিস নং: ${num}`,refSub:`Hadith #${num}`});
+    sho('hpv');
+  }catch{errEl('he','হাদিস পাওয়া যায়নি।');}
+  tog('hl',0);
+}
+
+function tog(id,v){document.getElementById(id).classList.toggle('on',!!v);}
+function sho(id){document.getElementById(id).classList.add('on');}
+function hid(id){document.getElementById(id).classList.remove('on');}
+function errEl(id,msg){const e=document.getElementById(id);e.textContent=msg;e.classList.add('on');}
+
+function dlCard(cid,name){
+  const a=document.createElement('a');a.download=name+'-'+Date.now()+'.png';
+  a.href=document.getElementById(cid).toDataURL('image/png');a.click();
+}
+
+// ═══════════════════════════════════
+// CANVAS DRAW
+// ═══════════════════════════════════
+function getTheme(id){
+  const S=getSettings();
+  const themes=S.themes||[];
+  return themes.find(t=>t.id===id)||themes[0]||{bg1:'#060d06',bg2:'#0d1c0d',bg3:'#172817',acc:'#1f3d1f',gold:'#c9a84c',text:'#f0ead8',sub:'#b8a060',brd:'rgba(201,168,76,.35)'};
+}
+
+function rRect(c,x,y,w,h,r){
+  c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
+  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
+}
+
+function gLine(c,cx,y,W,t,w=1.3){
+  const lw=W*.62;const g=c.createLinearGradient(cx-lw/2,y,cx+lw/2,y);
+  g.addColorStop(0,'transparent');g.addColorStop(.4,t.gold);g.addColorStop(.6,t.gold);g.addColorStop(1,'transparent');
+  c.save();c.strokeStyle=g;c.lineWidth=w;c.beginPath();c.moveTo(cx-lw/2,y);c.lineTo(cx+lw/2,y);c.stroke();c.restore();
+}
+
+function drawIslamicBg(c,W,H,t){
+  const bg=c.createRadialGradient(W/2,H*.38,0,W/2,H*.38,W*.9);
+  bg.addColorStop(0,t.bg2);bg.addColorStop(.5,t.bg2);bg.addColorStop(1,t.bg1);
+  c.fillStyle=bg;c.fillRect(0,0,W,H);
+  const bg2=c.createRadialGradient(W/2,0,0,W/2,0,W*.65);
+  bg2.addColorStop(0,t.bg3+'55');bg2.addColorStop(1,'transparent');
+  c.fillStyle=bg2;c.fillRect(0,0,W,H);
+  const bg3=c.createRadialGradient(W/2,H,0,W/2,H,W*.55);
+  bg3.addColorStop(0,t.acc+'30');bg3.addColorStop(1,'transparent');
+  c.fillStyle=bg3;c.fillRect(0,0,W,H);
+
+  // 8-pointed stars
+  c.save();c.globalAlpha=.06;c.strokeStyle=t.gold;c.lineWidth=0.9;
+  const step=72;
+  for(let px=step/2;px<W+step;px+=step)for(let py=step/2;py<H+step;py+=step){
+    c.beginPath();for(let k=0;k<16;k++){const a=(k*Math.PI/8)-Math.PI/2;const r=k%2===0?18:8;
+    k===0?c.moveTo(px+r*Math.cos(a),py+r*Math.sin(a)):c.lineTo(px+r*Math.cos(a),py+r*Math.sin(a));}c.closePath();c.stroke();
+  }
+  // Diagonal lines
+  c.lineWidth=0.6;c.globalAlpha=.03;
+  for(let i=-H;i<W+H;i+=44){c.beginPath();c.moveTo(i,0);c.lineTo(i+H,H);c.stroke();c.beginPath();c.moveTo(i,0);c.lineTo(i-H,H);c.stroke();}
+  // Corner mandalas
+  c.globalAlpha=.06;c.lineWidth=1;
+  [[52,52],[W-52,52],[52,H-52],[W-52,H-52]].forEach(([cx,cy])=>{
+    for(let r=10;r<=42;r+=8){c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.stroke();}
+    for(let k=0;k<8;k++){const a=k*Math.PI/4;c.beginPath();c.moveTo(cx,cy);
+      c.quadraticCurveTo(cx+35*Math.cos(a-.4),cy+35*Math.sin(a-.4),cx+44*Math.cos(a),cy+44*Math.sin(a));
+      c.quadraticCurveTo(cx+35*Math.cos(a+.4),cy+35*Math.sin(a+.4),cx,cy);c.stroke();}
+  });
+  // Central rosette
+  c.globalAlpha=.035;c.lineWidth=1;
+  const CX=W/2,CY=H/2;
+  for(let r=60;r<=200;r+=30){c.beginPath();c.arc(CX,CY,r,0,Math.PI*2);c.stroke();}
+  for(let k=0;k<12;k++){const a=k*Math.PI/6;c.beginPath();c.moveTo(CX,CY);c.lineTo(CX+220*Math.cos(a),CY+220*Math.sin(a));c.stroke();}
+  c.restore();
+  // Borders
+  c.save();c.strokeStyle=t.brd;c.lineWidth=2;rRect(c,16,16,W-32,H-32,24);c.stroke();
+  c.globalAlpha=.35;c.lineWidth=.8;rRect(c,26,26,W-52,H-52,18);c.stroke();
+  c.globalAlpha=.15;c.lineWidth=.6;rRect(c,38,38,W-76,H-76,14);c.stroke();
+  c.restore();
+}
+
+function wrapText(c,text,maxW){
+  const words=text.split(' ');let line='',lines=[];
+  for(const w of words){const tt=line?line+' '+w:w;
+    if(c.measureText(tt).width>maxW&&line){lines.push(line);line=w;}else line=tt;}
+  if(line)lines.push(line);return lines;
+}
+
+function drawCard(cid,{type,text,style,ref,refSub}){
+  const cv=document.getElementById(cid);
+  const W=1080,H=1080;cv.width=W;cv.height=H;
+  const c=cv.getContext('2d');
+  const t=getTheme(style);
+  const CX=W/2;
+  const isAdvanced=CU&&CU.plan==='advanced';
+  const S=getSettings();
+
+  drawIslamicBg(c,W,H,t);
+
+  // Top arabic
+  c.save();c.font='bold 28px Amiri';c.fillStyle=t.gold;c.textAlign='center';c.globalAlpha=.72;
+  c.fillText(type==='quran'?'﴾ القرآن الكريم ﴿':'قَالَ رَسُولُ اللَّهِ ﷺ',CX,88);c.restore();
+  gLine(c,CX,112,W,t);
+
+  // Badge
+  const bLabel=type==='quran'?'কোরআনের আয়াত':'হাদিস শরীফ';
+  c.save();c.font='600 18px "Noto Serif Bengali"';
+  const bw=c.measureText(bLabel).width+72;
+  rRect(c,(W-bw)/2,123,bw,44,22);
+  const bbg=c.createLinearGradient((W-bw)/2,0,(W+bw)/2,0);
+  bbg.addColorStop(0,t.acc+'88');bbg.addColorStop(.5,t.acc+'cc');bbg.addColorStop(1,t.acc+'88');
+  c.fillStyle=bbg;c.fill();c.strokeStyle=t.gold+'44';c.lineWidth=1;c.stroke();
+  c.fillStyle=t.gold;c.textAlign='center';c.fillText(bLabel,CX,152);c.restore();
+  gLine(c,CX,181,W,t);
+
+  // Quote deco
+  c.save();c.font='bold 140px Amiri';c.globalAlpha=.07;c.fillStyle=t.gold;
+  c.textAlign='left';c.fillText('"',58,298);c.textAlign='right';c.fillText('"',W-58,H-138);c.restore();
+
+  // Main text
+  const len=text.length;
+  let fs=len<80?40:len<150?34:len<250?28:len<380?24:20;
+  c.font=`700 ${fs}px "Noto Serif Bengali"`;c.fillStyle=t.text;c.textAlign='center';
+  const lh=fs*1.62,zTop=208,zBot=H-192,zH=zBot-zTop;
+  const lines=wrapText(c,text,W-180);
+  const totalH=lines.length*lh;
+  const startY=zTop+(zH-totalH)/2+fs*.88;
+  lines.forEach((l,i)=>c.fillText(l,CX,startY+i*lh));
+  const textEnd=startY+lines.length*lh;
+
+  // Reference
+  const ry=Math.max(textEnd+36,H-176);
+  gLine(c,CX,ry-14,W,t,.9);
+  c.save();c.font='600 19px "Noto Serif Bengali"';
+  const rw=Math.min(c.measureText(ref).width+68,W-60);
+  rRect(c,(W-rw)/2,ry+2,rw,48,24);
+  const rbg=c.createLinearGradient((W-rw)/2,0,(W+rw)/2,0);
+  rbg.addColorStop(0,t.acc+'99');rbg.addColorStop(.5,t.acc+'ee');rbg.addColorStop(1,t.acc+'99');
+  c.fillStyle=rbg;c.fill();c.strokeStyle=t.gold+'60';c.lineWidth=1.2;c.stroke();
+  c.fillStyle=t.gold;c.textAlign='center';c.fillText(ref,CX,ry+32);c.restore();
+  c.save();c.font='italic 13px Lato';c.fillStyle=t.sub;c.textAlign='center';c.fillText(refSub,CX,ry+62);c.restore();
+
+  // Footer
+  const FY=H-58;
+  if(!isAdvanced){
+    c.save();
+    const fg=c.createLinearGradient(0,FY-30,0,H);
+    fg.addColorStop(0,'transparent');fg.addColorStop(1,t.bg1+'f8');
+    c.fillStyle=fg;c.fillRect(0,FY-30,W,90);
+    gLine(c,CX,FY-7,W,t,.9);
+    c.font='bold 18px Lato';c.fillStyle=t.gold;c.textAlign='center';
+    c.fillText('✦  POWERED BY '+S.appName+'  ✦',CX,FY+14);
+    c.font='11px Lato';c.fillStyle=t.sub+'99';c.fillText('@sunnahstudio',CX,FY+30);
+    c.restore();
+  } else {
+    // Advanced — no watermark, just subtle line
+    gLine(c,CX,H-20,W,t,.5);
+  }
+}
+
+// ═══════════════════════════════════
+// POLLING
+// ═══════════════════════════════════
+function startPolling(){
+  setInterval(()=>{
+    if(!CU)return;
+    refreshUserPlan();
+    loadNotifs();
+    if(CU.plan==='advanced'&&document.getElementById('cwidget').classList.contains('on')) renderChat();
+    // Update chat button visibility
+    document.getElementById('cbtn').classList.toggle('on',CU.plan==='advanced');
+    // Re-render theme buttons if settings changed
+    renderThemeBtns();
+    applyAppSettings();
+  },5000);
+}
+</script>
+</body>
+</html>
